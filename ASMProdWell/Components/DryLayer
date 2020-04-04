@@ -1,0 +1,117 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PrototypeDryWell.Components
+{
+    [Table("Layer")]
+	public class DryLayer
+	{
+        public int Id { get; set; }
+
+		/// <summary>
+		/// Пластовое давление (МПа)
+		/// </summary>
+		public double ReservoirPressure { get; set; }
+
+        /// <summary>
+        /// Температура нейтрального слоя
+        /// </summary>
+        public double NeutralLayerTemperature { get; set; }
+
+        /// <summary>
+        /// Коэффициент фильтрационного сопротивления a
+        /// </summary>
+        public double aCoefficient { get; set; }
+
+        /// <summary>
+        /// Коэффициент фильтрационного сопротивления b
+        /// </summary>
+        public double bCoefficient { get; set; }
+
+        /// <summary>
+        /// Вычисление забойного давления (МПа) по формуле притока газа к забою скважины 
+        /// Гриценко стр. 182
+        /// </summary>
+        /// <param name = "discharge" > Расход или дебит скважины(тыс.м3/сут)</param>
+        /// <returns>Забойное давление (МПа)</returns>
+        public double GetBottomholePressure(double discharge) {
+			double Q = discharge;
+			double rP = ReservoirPressure;
+			double a = aCoefficient;
+			double b = bCoefficient;
+
+			double bottomholePressure = Math.Sqrt(rP * rP - Q * (a + b * Q));
+
+			return bottomholePressure;
+		}
+
+		/// <summary>
+		/// Вычисление максимального притока к забою (тыс.м3/сут)
+		/// Гриценко стр. 182
+		/// </summary>
+		/// <returns>Приток газа (тыс.м3/сут)</returns>
+		public double GetMaxGasDischarge()
+		{
+			// Вместо забойного принимаем атмосферное давление для подсчета теоритически максимально возможного притока к забою
+			double bP = PhysicalConstants.AtmosphericPressure;
+			double rP = ReservoirPressure;
+			double a = aCoefficient;
+			double b = bCoefficient;
+			double Q1, Q2, Q;
+			if (SolveQuadraticEquation(b, a, (bP * bP - rP * rP), out Q1, out Q2))
+			{
+				if (Q2 > Q1)
+					Q = Q2;
+				else
+					Q = Q1;
+			}
+			else
+				throw new InvalidOperationException(); 
+
+			return Q;
+		}
+
+
+		public DryLayer() { }
+
+		/// <summary>
+		/// Создание газонесущего пласта
+		/// </summary>
+		/// <param name="reservoirPressure">Пластовое давление (МПа)</param>
+		/// <param name="a">Коэффициент фильтрационного сопротивления a</param>
+		/// <param name="b">Коэффициент фильтрационного сопротивления b</param>
+		public DryLayer(double reservoirPressure, double a, double b, double neutralLayerTemperature)
+		{
+			Console.WriteLine("");
+			ReservoirPressure = reservoirPressure;
+			aCoefficient = a;
+			bCoefficient = b;
+			NeutralLayerTemperature = neutralLayerTemperature;
+		}
+
+		/// <summary>
+		/// Решение квадратного уравнения
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		/// <param name="c"></param>
+		/// <param name="x1"></param>
+		/// <param name="x2"></param>
+		private bool SolveQuadraticEquation(double a, double b, double c, out double x1, out double x2)
+		{
+			double D = b * b - 4 * a * c;
+			if (D < 0)
+			{
+				x1 = x2 = 0;
+				return false;
+			}
+			x1 = (-b + Math.Sqrt(D)) / (2 * a);
+			x2 = (-b - Math.Sqrt(D)) / (2 * a);
+			return true; 
+		}
+	}
+}

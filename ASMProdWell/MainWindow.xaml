@@ -1,0 +1,834 @@
+﻿<Window x:Class="ASMProdWell.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ASMProdWell"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"        
+        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:dvc="clr-namespace:System.Windows.Forms.DataVisualization.Charting;assembly=System.Windows.Forms.DataVisualization"
+        mc:Ignorable="d"
+        Title="Автоматизированная система комплексных исследований живучести газовых скважин в условиях обводнения" Width="1093.917" Height="734" ResizeMode="NoResize" Closing="Window_Closing">
+    <Window.Resources>
+        <Style x:Key="OnOffToggleImageStyle" TargetType="ToggleButton">
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Image Source="Resource/on.jpg" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="False">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Image Source="Resource\off.jpg" />
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="0,0,4,0">
+        <Grid HorizontalAlignment="Left" Height="Auto" Width="Auto" Margin="0 0 -7 0" Background="#FFE5E5E5" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Image x:Name="ImageLeft" Source="Resource\Image1.bmp"/>
+            </Grid>
+            <TabControl Grid.Column="1" HorizontalAlignment="Left" Height="Auto" Width="Auto" Margin="0">
+                <TabItem Header="Общие">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Row="0" Margin="5 8 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label  Grid.Column="0" HorizontalAlignment="Center" Content="Скважина №127414"/>
+                            <Button Margin="5" Grid.Column="1" Content="Выбор скважины" Click="Button_ChoiceWell"/>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <GroupBox Header="Скважина" HorizontalAlignment="Left"  Margin="5 0 2 0" VerticalAlignment="Top" Width="376" Height="auto">
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                    <StackPanel x:Name="PipeRoughness"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Абсолютная шероховатость НКТ"/>
+                                        <TextBox Margin="3 3 3 3" Text="0,000115" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" x:Name="CB_TpR" Width="55" Height="20" SelectedIndex="1" SelectionChanged="Mm_M_SelectionChanged">
+                                            <TextBlock>м</TextBlock>
+                                            <TextBlock>мм</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="TubingLength"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Длина НКТ"/>
+                                        <TextBox Margin="3 3 3 3" Text="1725" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" Width="55" Height="20" SelectedIndex="0">
+                                            <ComboBoxItem>м</ComboBoxItem>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="TubingDepth"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Глубина НКТ"/>
+                                        <TextBox Margin="3 3 3 3" Text="1725" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" Width="55" Height="20" SelectedIndex="0">
+                                            <TextBlock>м</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="PipeDiameter"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Внутренний диаметр НКТ"/>
+                                        <TextBox Margin="3 3 3 3" Text="0,076" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" x:Name="CB_TpD" Width="55" Height="20" SelectedIndex="1" SelectionChanged="Mm_M_SelectionChanged">
+                                            <TextBlock>м</TextBlock>
+                                            <TextBlock>мм</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="WallThickness"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Толщина стенки НКТ"/>
+                                        <TextBox Margin="3 3 3 3" Text="0,005" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" x:Name="CB_Wall_Thickness" Width="55" Height="20" SelectedIndex="1" SelectionChanged="Mm_M_SelectionChanged">
+                                            <TextBlock>м</TextBlock>
+                                            <TextBlock>мм</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel  x:Name="OperationalColumnDiameter"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Диаметр эксплуат. колонны"/>
+                                        <TextBox Margin="3 3 3 3" Text="0,144" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" x:Name="CB_DiameterOperationalColumn" Width="55" Height="20" SelectedIndex="1" SelectionChanged="Mm_M_SelectionChanged">
+                                            <TextBlock>м</TextBlock>
+                                            <TextBlock>мм</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="WellheadPressure"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Устьевое давление"/>
+                                        <TextBox Margin="3 3 3 3" Text="2,18" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" Width="55" Height="20" SelectedIndex="0">
+                                            <TextBlock>МПа</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="WellheadTemperature"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Устьевая температура"/>
+                                        <TextBox Margin="3 3 3 3" Text="286" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" Width="55" Height="20" SelectedIndex="1" SelectionChanged="K_C_SelectionChanged">
+                                            <TextBlock>K</TextBlock>
+                                            <TextBlock>°C</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="BottomholeTemperature"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Забойная температура"/>
+                                        <TextBox Margin="3 3 3 3" Text="302,74" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                        <ComboBox Margin="0 3" x:Name="CB_BT" Width="55" Height="20" SelectedIndex="1" SelectionChanged="K_C_SelectionChanged">
+                                            <TextBlock>K</TextBlock>
+                                            <TextBlock>°C</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <GroupBox Header="Пласт" Margin="5 5 0 0"
+                                VerticalAlignment="Top" Width="auto" Height="auto" HorizontalAlignment="Left" >
+                                <StackPanel>
+                                    <GroupBox Header="Фильтрационное сопротивление" HorizontalAlignment="Right"  Margin="5 5 0 0"
+                                VerticalAlignment="Top" Width="360" Height="auto">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                            <StackPanel x:Name="LayerA"  Orientation="Horizontal" Margin="3 0 0 0" HorizontalAlignment="Right">
+                                                <Label HorizontalAlignment="Left" Content="Коэффициент a"/>
+                                                <TextBox Margin="3 3 3 0" Text="0,172361" Height="20" Width="100" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 0" Height="20" SelectedIndex="0" Width="55">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="LayerB"  Orientation="Horizontal" Margin="3 0 0 0" HorizontalAlignment="Right">
+                                                <Label HorizontalAlignment="Right" Content="Коэффициент b"/>
+                                                <TextBox Margin="3 0 3 0" Text="0,0004427" Height="20" Width="100" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 0 0 0" Height="20" SelectedIndex="0" Width="55">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <GroupBox Header="Востановление забойного давления" HorizontalAlignment="Right"  Margin="5 5 0 0"
+                                VerticalAlignment="Top" Width="360" Height="auto">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                            <StackPanel x:Name="Alpha"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Label  HorizontalAlignment="Right" Content="Коэффициент α"/>
+                                                <TextBox Margin="3 3 3 0" Text="3,12" Height="20" Width="100" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 0" Height="20" SelectedIndex="0" Width="55">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="Beta"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Label  HorizontalAlignment="Right" Content="Коэффициент β"/>
+                                                <TextBox Margin="3 3 3 0" Text="0,926E-4" Height="20" Width="100" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 0" Height="20" SelectedIndex="0" Width="55">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
+                                    <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0 10 5 0">
+                                        <StackPanel x:Name="ReservoirPressure"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Label Grid.Column="0" HorizontalAlignment="Right" Content="Пластовое давление Pпл"/>
+                                            <TextBox Grid.Column="1" Margin="3 3 3 3" Text="5,46" Height="20" Width="100"
+                                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                            <ComboBox Margin="0 3" Width="55" Height="20" SelectedIndex="0">
+                                                <TextBlock>МПа</TextBlock>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel x:Name="NeutralLayerTemperature"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Label Grid.Column="0" HorizontalAlignment="Right" Content="Температура нейт. слоя Tн.с"/>
+                                            <TextBox Grid.Column="1" Margin="3 3 3 3" Text="303" Height="20" Width="100"
+                                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                            <ComboBox Margin="0 3" Width="55" Height="20" SelectedIndex="1" SelectionChanged="K_C_SelectionChanged">
+                                                <TextBlock>K</TextBlock>
+                                                <TextBlock>°C</TextBlock>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 19 0 0">
+                                            <Label Grid.Column="0" HorizontalAlignment="Right" Content="Обводнение скважины"/>
+                                            <ToggleButton x:Name="IsWateredWell" Margin="3 3 3 3" IsThreeState="False" IsChecked="True" BorderThickness="0" BorderBrush="Black"  
+                                                            Style="{StaticResource OnOffToggleImageStyle}" Height="20" Width="63" Checked="ToggleButton1_Checked" 
+                                                            Unchecked="ToggleButton1_Unchecked"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <GroupBox x:Name="BlockId1" Header="Обводнение"   Margin="4,0,0,0" VerticalAlignment="Top" Width="360"
+                                            Height="auto" HorizontalAlignment="Right">
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel x:Name="LayerA1"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Label HorizontalAlignment="Right" Content="Коэффициент притока жидкости a"/>
+                                                <TextBox  Margin="3 5 3 3" Text="0,016108" Height="20" Width="75" HorizontalAlignment="Left" 
+                                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 5 0 3" Height="20" SelectedIndex="0" Width="55">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="LayerB1"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Label HorizontalAlignment="Right" Content="Коэффициент притока жидкости b"/>
+                                                <TextBox  Margin="3 3 3 3" Text="0,008566" Height="20" Width="75" HorizontalAlignment="Left" 
+                                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="55">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </GroupBox>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+                        <Grid x:Name="Grid_DataGrid_ChoiceWell" Grid.Column="1" Grid.RowSpan="2" Width="0">
+                            <DataGrid x:Name="WellGrid" CanUserAddRows="False"  CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" SelectionMode="Single"
+                                        Margin="5 14 5 5">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Номер" Binding="{Binding Path=NumberWell}" Width="auto" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Название" Binding="{Binding Path=NameWell}" Width="141" IsReadOnly="True"/>
+                                    <DataGridTextColumn Header="Дата" Binding="{Binding Path=DateWell}" Width="auto" IsReadOnly="True"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                        <Grid x:Name="Grid_Button_ChoiceWellOk" Grid.Column="1" Grid.Row="2" Width="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="10 10" Height="20" Grid.Column="0" VerticalAlignment="Top" Content="Выбор" Click="Button_ChoiceWellOk"/>
+                            <Button Margin="10 10" Height="20" Grid.Column="1" VerticalAlignment="Top" Content="Отмена"  Click="Button_ChoiceWellOk"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Флюид">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="3" Header="Газ" HorizontalAlignment="Right"  Margin="5 5 3 5"
+                            VerticalAlignment="Top" Width="auto" Height="auto">
+                            <StackPanel Orientation="Vertical">
+                                <DataGrid x:Name="ComponentGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" 
+                                    SelectionMode="Single" Margin="5 5" CellEditEnding="ComponentGrid_CellEditEnding" PreviewKeyDown="PreviewKeyDown_BlocSpace" 
+                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyUp="ComponentGrid_PreviewKeyUp">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Название" Binding="{Binding Path=NameComponent}" Width="auto" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Формула" Binding="{Binding Path=FormulaComponent}" Width="auto" IsReadOnly="True"/>
+                                        <DataGridTextColumn Header="Доля, %" Binding="{Binding Path=MoleFractionGridRepresentation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" 
+                                                     local:TextBoxPasteBehavior.PasteCommand="{Binding PropertyGridTextPasted}" Width="191"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <StackPanel  Grid.Row="1" Margin="10 5" Orientation="Horizontal" Grid.ColumnSpan="2">
+                                    <Label Content="Всего(%):" VerticalAlignment="Bottom"/>
+                                    <Label x:Name="GeneralPercentComponent" Content="" VerticalAlignment="Bottom" FontWeight="Bold"/>
+                                    <Button Content="Нормировать" Margin="70 0 0 2" Width="160" VerticalAlignment="Bottom" Click="Button_NormalizeFluid"/>
+                                </StackPanel>
+                                <TextBlock Grid.Row="2" Margin="10 5" x:Name="Label_ErrorFluidComponents" MaxWidth="350" TextWrapping="Wrap"/>
+                                <StackPanel Orientation="Vertical">
+                                    <StackPanel x:Name="GasDensity"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Плотность"/>
+                                        <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="80" IsReadOnly="True"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                        <ComboBox Margin="0 3 0 3" Width="75" Height="20" SelectedIndex="0">
+                                            <TextBlock>кг/м³</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="CriticalPressure"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Псевдокритическое давление"/>
+                                        <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="80" IsReadOnly="True"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                        <ComboBox Margin="0 3 0 3" Width="75" Height="20" SelectedIndex="0">
+                                            <TextBlock>МПа</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <StackPanel x:Name="CriticalTemperature"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Label HorizontalAlignment="Right" Content="Псевдокритическая температура"/>
+                                        <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="80"  IsReadOnly="True"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                        <ComboBox Margin="0 3 0 3" Width="75" Height="20" SelectedIndex="0" SelectionChanged="K_C_SelectionChanged">
+                                            <TextBlock>К</TextBlock>
+                                            <TextBlock>°C</TextBlock>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </StackPanel>
+                                <Button Margin="30 10 30 5" Content="Рассчитать" Click="Button_Click_GasFluidCalculate" />
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Grid.Row="4" Header="Конденсат" HorizontalAlignment="Right"  Margin="5 5 3 5"
+                                VerticalAlignment="Top" Width="375" Height="auto">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                <StackPanel x:Name="NglFactor"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Label HorizontalAlignment="Right" Content="Конденсатогазовый фактор"/>
+                                    <TextBox Margin="3 3 3 3" Text="0,04" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                    <ComboBox Margin="0 3" Width="75" Height="20" SelectedIndex="0">
+                                        <TextBlock>т/тыc.м³</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="NglDensity"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Label HorizontalAlignment="Right" Content="Плотность"/>
+                                    <TextBox Margin="3 3 3 3" Text="780" Height="20" Width="80"
+                                                    PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace"/>
+                                    <ComboBox Margin="0 3" Width="75" Height="20" SelectedIndex="0">
+                                        <TextBlock>кг/м³</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Grid.Row="5" x:Name="GroupBox_Water" Header="Вода" HorizontalAlignment="Right"  Margin="5 5 3 5"
+                                VerticalAlignment="Top" Width="375" Height="auto">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                <StackPanel x:Name="WaterDensity"  Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Label HorizontalAlignment="Right" Content="Плотность"/>
+                                    <TextBox  Margin="3 3 3 3" Text="1170" Height="20" Width="80" HorizontalAlignment="Left" 
+                                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0 3 0 3" Width="75" Height="20" SelectedIndex="0">
+                                        <TextBlock>кг/м³</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="TabItem_Equipment" Header="Оборудование">
+                    <Grid Background="#FFE5E5E5" Width="705">
+                        <TabControl Height="Auto" Margin="0">
+                            <TabItem Header="ЭЦН">
+                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Label x:Name="ESP_Name" HorizontalAlignment="Center" Content=""/>
+                                    <WindowsFormsHost Width="680" Height="270" Margin="0 0 0 10">
+                                        <dvc:Chart x:Name="Chart_ESP"/>
+                                    </WindowsFormsHost>
+                                    <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+                                        <Button Name="AddEsnButton" Margin="10 0 3 0" Content="Добавить" Height="20" Width="90" Click="Button_Click_AddESN"/>
+                                        <Button Name="EditEsnButton" Margin="10 0 3 0" Content="Изменить" Height="20" Width="90" Click="Button_Click_UpdateESP"/>
+                                        <TextBlock  Margin="20 2 4 0" Text="Кол-во ступеней"/>
+                                        <TextBox  Margin="3 0 0 0" x:Name="ESP_NumberStages" Text="1" Height="20" Width="35" MaxLength="3" LostFocus="TB_StageAndFrequency_LostFocus" PreviewKeyDown="PreviewKeyDown_BlocSpace" 
+                                                    KeyDown="TB_StageAndFrequency_KeyDown" PreviewTextInput="PreviewTextInput_DigitalInt"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <Button FontSize="7" Width="20" Height="10" Margin="0 0 0 0" Padding="0 0 0 0" Click="Button_Click_NumStagesStepUp" VerticalContentAlignment="Top">▲</Button>
+                                            <Button FontSize="7" Width="20" Height="10" Margin="0 0 0 0" Padding="0 0 0 0" Click="Button_Click_NumStagesStepDown" VerticalContentAlignment="Top">▼</Button>
+                                        </StackPanel>
+                                        <TextBlock  Margin="20 2 4 0" Text="Частота"/>
+                                        <TextBox  Margin="3 0 0 0" x:Name="ESP_Frequency" Text="50" Height="20" Width="35" MaxLength="3" LostFocus="TB_StageAndFrequency_LostFocus" PreviewKeyDown="PreviewKeyDown_BlocSpace" 
+                                                    KeyDown="TB_StageAndFrequency_KeyDown" PreviewTextInput="PreviewTextInput_DigitalInt"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <Button FontSize="7" Width="20" Height="10" Margin="0 0 0 0" Padding="0 0 0 0" Click="Button_Click_FrequencyStepUp" VerticalContentAlignment="Top">▲</Button>
+                                            <Button FontSize="7" Width="20" Height="10" Margin="0 0 0 0" Padding="0 0 0 0" Click="Button_Click_FrequencyStepDown" VerticalContentAlignment="Top">▼</Button>
+                                        </StackPanel>
+                                        <ComboBox Margin="10 0" Width="50" Height="20" SelectedIndex="0">
+                                            <TextBlock>Гц</TextBlock>
+                                        </ComboBox>
+                                        <Button x:Name="OK" Margin="10 0 3 0" Content="Обновить" Height="20" Width="90" Click="Button_Click_UpdateGrafESN"/>
+                                    </StackPanel>
+                                    <TabControl Margin="0 10 0 0" HorizontalAlignment="Left" Height="Auto" Width="Auto">
+                                        <TabItem Header="Каталог ступеней ЭЦН">
+                                            <DataGrid x:Name="DataGrid_DataBaseESP" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" 
+                                    SelectionMode="Single" Margin="5 5" PreviewTextInput="PreviewTextInput_DigitalDouble" SelectionChanged="DataGrid_ESP_SelectionChanged" Height="270">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" Width="25" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" Width="237.8" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Диаметр" Binding="{Binding Path=Diameter}" Width="80" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Ном. расход" Binding="{Binding Path=NominalRate}" Width="80" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Напор" Binding="{Binding Path=Head}" Width="80" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Мощность" Binding="{Binding Path=Power}" Width="80" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="КПД" Binding="{Binding Path=Efficiency}" Width="75" IsReadOnly="True"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </TabItem>
+                                        <TabItem Header="Подобранные ЭЦН">
+                                            <DataGrid x:Name="DataGrid_ESPChosing" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" 
+                                    SelectionMode="Single" Margin="5 5" PreviewTextInput="PreviewTextInput_DigitalDouble" SelectionChanged="DataGrid_ChosenESP_SelectionChanged" Height="270">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" Width="240.9" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Диаметр" Binding="{Binding Path=Diameter}" Width="60" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Расход" Binding="{Binding Path=Rate}" Width="60" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Кол-во ступеней" Binding="{Binding Path=NumberStages}" Width="105" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Напор" Binding="{Binding Path=Head}" Width="50" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Мощность" Binding="{Binding Path=Power}" Width="70" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="КПД" Binding="{Binding Path=Efficiency}" Width="40" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Частота" Binding="{Binding Path=Frequency}" Width="52" IsReadOnly="True"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </TabItem>
+                                    </TabControl>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="ВШН">
+                                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Label x:Name="PCP_Name" HorizontalAlignment="Center" Content=""/>
+                                    <WindowsFormsHost Width="695" Height="270" Margin="0 0 0 10">
+                                        <dvc:Chart x:Name="Chart_PCP"/>
+                                    </WindowsFormsHost>
+                                    <StackPanel Margin="10 0 0 0" Orientation="Horizontal">
+                                        <Button Name="AddPcpButton" Margin="10 0 3 0" Content="Добавить" Height="20" Width="90" Click="Button_Click_AddPCP"/>
+                                        <Button Name="EditPcpButton" Margin="10 0 3 0" Content="Изменить" Height="20" Width="90" Click="Button_Click_UpdatePCP"/>
+                                        <TextBlock  Margin="20 2 4 0" Text="Скорость вращения"/>
+                                        <TextBox  Margin="3 0 0 0" x:Name="PCP_Speed" Text="100" Height="20" Width="35" MaxLength="3" LostFocus="TB_Speed_LostFocus" PreviewKeyDown="PreviewKeyDown_BlocSpace" 
+                                                    KeyDown="TB_Speed_KeyDown" PreviewTextInput="PreviewTextInput_DigitalInt"/>
+                                        <StackPanel Orientation="Vertical">
+                                            <Button FontSize="7" Width="20" Height="10" Margin="0 0 0 0" Padding="0 0 0 0" Click="Button_Click_SpeedStepUp" VerticalContentAlignment="Top">▲</Button>
+                                            <Button FontSize="7" Width="20" Height="10" Margin="0 0 0 0" Padding="0 0 0 0" Click="Button_Click_SpeedStepDown" VerticalContentAlignment="Top">▼</Button>
+                                        </StackPanel>
+                                        <ComboBox Margin="10 0" Width="70" Height="20" SelectedIndex="0">
+                                            <TextBlock>об/мин</TextBlock>
+                                        </ComboBox>
+                                        <Button Margin="10 0 3 0" Content="Обновить" Height="20" Width="90" Click="Button_Click_UpdateGrafPCP"/>
+                                    </StackPanel>
+                                    <TabControl Margin="0 10 0 0" HorizontalAlignment="Left" Height="Auto" Width="Auto">
+                                        <TabItem Header="Каталог насосов ВШН">
+                                            <DataGrid x:Name="DataGrid_DataBasePCP" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" Height="270" 
+                                    SelectionMode="Single" Margin="5 5" PreviewTextInput="PreviewTextInput_DigitalDouble" SelectionChanged="DataGrid_PCP_SelectionChanged">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="ID" Binding="{Binding Path=Id}" Width="25" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" Width="320" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Диаметр" Binding="{Binding Path=Diameter}" Width="110" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Ном. расход" Binding="{Binding Path=NominalRate}" Width="110" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Базовая скорость" Binding="{Binding Path=NominalSpeed}" Width="110" IsReadOnly="True"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </TabItem>
+                                        <TabItem Header="Подобранные ВШН">
+                                            <DataGrid x:Name="DataGrid_PCPChosing" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" 
+                                    SelectionMode="Single" Margin="5 5" PreviewTextInput="PreviewTextInput_DigitalDouble" SelectionChanged="DataGrid_ChosenPCP_SelectionChanged" Height="270">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Имя" Binding="{Binding Path=Name}" Width="187.2" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Диаметр" Binding="{Binding Path=Diameter}" Width="60" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Расход" Binding="{Binding Path=Rate}" Width="50" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Ном. расход" Binding="{Binding Path=NominalRate}" Width="auto" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Скорость" Binding="{Binding Path=Speed}" Width="70" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Напор" Binding="{Binding Path=Head}" Width="50" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Мощность" Binding="{Binding Path=Power}" Width="70" IsReadOnly="True"/>
+                                                    <DataGridTextColumn Header="Крутящий момент" Binding="{Binding Path=Torque}" Width="110" IsReadOnly="True"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </TabItem>
+                                    </TabControl>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Плунжерный лифт">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <Label x:Name="PL_Name" HorizontalAlignment="Center" Content=""/>
+                                    <WindowsFormsHost Width="690" Height="381">
+                                        <dvc:Chart x:Name="Chart_PL"/>
+                                    </WindowsFormsHost>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5 0 0 0">
+                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+                                            <StackPanel x:Name="PL_Pressure_Start_Production" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Давление начала добычи"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>МПа</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_Pressure_Valve_Opening"  Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Давление открытия клапана"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>МПа</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_Pressure_Valve_Closing" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Давление закрытия клапана"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>МПа</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_Time_Production" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Время добычи"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_Time_Recovery" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Время восстановления"/>
+                                                <TextBox Margin="3 3 3 3"  Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_Time_Up" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Время подъема"/>
+                                                <TextBox Margin="3 3 3 3"  Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>мин</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_CriticalRate"  Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="165" HorizontalAlignment="Right" Content="Критический дебит"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>тыс.м³/сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel Margin="20 0 0 0">
+                                            <StackPanel x:Name="PL_NumCycles" Orientation="Horizontal" Margin="3 3 3 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Кол-во циклов в сутки"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock></TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_WaterColumnHeight"  Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Высота водяной пробки"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>м</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_WaterColumnVolume"  Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Объём водяной пробки"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>м³</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_StartGasRate" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Приток газа начала добычи"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>тыс.м³/сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_StartWaterRate" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Приток воды начала добычи"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>м³/сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_CloseGasRate" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Приток газа конца добычи"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>тыс.м³/сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                            <StackPanel x:Name="PL_CloseWaterRate" Orientation="Horizontal" Margin="3 3 0 3">
+                                                <Label Width="170" HorizontalAlignment="Right" Content="Приток воды конца добычи"/>
+                                                <TextBox Margin="3 3 3 3" Text="0" Height="20" Width="60" IsReadOnly="True"
+                                        PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                                <ComboBox Margin="0 3 0 3" Padding="6 2 0 0" Height="20" SelectedIndex="0" Width="84">
+                                                    <TextBlock>м³/сут</TextBlock>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Системный анализ" x:Name="TabItem_SistemAnalysis">
+                    <Grid Background="#FFE5E5E5" Width="705">
+                        <TabControl Margin="0">
+                            <TabItem Header="Узловой анализ">
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <CheckBox x:Name="CheckBox_LequidFlow" Margin="5 5 5 0" Content="Приток жидкости" IsChecked="True" Click="CheckBox_LiquidFlow_Click"/>
+                                    <WindowsFormsHost Width="722" Height="678">
+                                        <dvc:Chart x:Name="Сhart_NodalAnalysis"/>
+                                    </WindowsFormsHost>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Градиент">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <DataGrid x:Name="ResearchNktGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" Width="auto" 
+                                              SelectionMode="Single" Margin="5 5" CellEditEnding="ComponentGrid_CellEditEnding" PreviewKeyDown="PreviewKeyDown_BlocSpace" 
+                                              PreviewTextInput="PreviewTextInput_DigitalDouble" Height="250">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Глубина" Binding="{Binding Path=Depth}" Width="auto" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Температура" Binding="{Binding Path=Temperature}" Width="auto" IsReadOnly="True"/>
+                                            <DataGridTextColumn Header="Давление" Binding="{Binding Path=Pressure}" Width="140" IsReadOnly="True"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                    <WindowsFormsHost Margin="5 0 0 0" Width="713" Height="382">
+                                        <dvc:Chart x:Name="Chart_ResearchNKT"/>
+                                    </WindowsFormsHost>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="Добыча">
+                                <Grid>
+                                    <StackPanel Orientation="Vertical">
+                                        <WindowsFormsHost Height="534" VerticalAlignment="Top" Margin="4,0,0,0">
+                                            <dvc:Chart x:Name="Chart_PL_Rate"/>
+                                        </WindowsFormsHost>
+                                    </StackPanel>
+                                    <Image Source="Resource\formuls1.bmp" Margin="8,524,-8,5"/>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="BlockId2" Header="Оборудование" Grid.Row="0" Margin="4 0 3 4" VerticalAlignment="Top" 
+                              Height="auto" Width="315" HorizontalAlignment="Right">
+                        <StackPanel x:Name="Equipment" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Label HorizontalAlignment="Right" Content="Установка"/>
+                            <ComboBox Margin="3 3 0 3" Height="20" Width="230" Padding="6 2 0 0" SelectedIndex="2" DropDownClosed="ComboBox_PumpEquipment_DropDownClosed" SelectionChanged="ComboBox_PumpEquipment_SelectionChanged">
+                                <TextBlock>Отсутствует (мгновенные показатели)</TextBlock>
+                                <TextBlock>Отсутствует (показатели за сутки)</TextBlock>
+                                <TextBlock>ЭЦН</TextBlock>
+                                <TextBlock>ВШН</TextBlock>
+                                <TextBlock>Плунжерный лифт</TextBlock>
+                            </ComboBox>
+                        </StackPanel>
+                    </GroupBox>
+                    <TabControl Grid.Row="1" Margin="3 0 3 0" x:Name="TabControl_Equipment">
+                        <TabItem x:Name="TabItem_ESP" Header="ЭЦН">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                <StackPanel x:Name="EspDynamicLevel" Margin="3 3 4 3" Orientation="Horizontal">
+                                    <Label HorizontalAlignment="Right" Content="Динамический уровень"/>
+                                    <TextBox Margin="3 3 3 3" Text="50" Height="20" Width="80" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0 3 0 3" Height="20" SelectedIndex="0" Width="55">
+                                        <TextBlock>м</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem x:Name="TabItem_PCP" Header="ВШН">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                                <StackPanel x:Name="PcpDynamicLevel" Orientation="Horizontal" Margin="3 3 4 3">
+                                    <Label HorizontalAlignment="Right" Content="Динамический уровень"/>
+                                    <TextBox Margin="3 3 3 3" Text="50" Height="20" Width="80" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0 3 0 3" Height="20"  SelectedIndex="0">
+                                        <TextBlock>м</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem x:Name="TabItem_PL" Header="Плунжерный лифт">
+                            <StackPanel Margin="0 0 3 0" x:Name="TabItem_PL_StackPanel" Orientation="Vertical" HorizontalAlignment="Right">
+                                <StackPanel x:Name="PL_PlungerSpeed" Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Ср. скорость плунжера"/>
+                                    <TextBox Margin="3 0" Text="223" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock>м/мин</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="PL_PressForOneBbl" Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Давление на подъём 1 брл"/>
+                                    <TextBox Margin="3 0" Text="0,703265243904156" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock>МПа</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="PL_PressForPlunger" Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Вес плунжера"/>
+                                    <TextBox Margin="3 3 3 3" Text="0,03447378646589" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock>МПа</TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="PL_FrictionUnderPlungerCoeff" Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Коэф. трения газа"/>
+                                    <TextBox Margin="3 3 3 3"  Text="45000" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock></TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                        <TabItem x:Name="TabItem_WorkingCoeff" Header="Коэф. эксплуатации ">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0 0 3 0">
+                                <StackPanel x:Name="WaterAccumulationRateCoeffA" Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Коэф. скопления воды а"/>
+                                    <TextBox Margin="3 0"  Text="0,2" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock></TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="WaterAccumulationRateCoeffB"  Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Коэф. скопления воды b"/>
+                                    <TextBox Margin="3 0" Text="1,3816" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0 3" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock></TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="WaterAccumulationRateCoeffC"  Orientation="Horizontal" Margin="3 0 0 0">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Коэф. скопления воды c"/>
+                                    <TextBox Margin="3 0" Text="0,00093" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0 3" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock></TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel x:Name="GasRateFallCoeffA"  Orientation="Horizontal" Margin="3 0 0 3">
+                                    <Label Width="165" HorizontalAlignment="Right" Content="Коэф. падения дебита газа a"/>
+                                    <TextBox Margin="3 0" Text="-60,476" Height="20" Width="60" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                    <ComboBox Margin="0 3" Height="20" SelectedIndex="0" Width="65">
+                                        <TextBlock></TextBlock>
+                                    </ComboBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </TabItem>
+                    </TabControl>
+                </Grid>
+                <Grid Grid.Row="0">
+                    <GroupBox Header="Параметры моделирования" HorizontalAlignment="Right"  Margin="5 5 3 0"
+                            VerticalAlignment="Top" Width="315" Height="auto">
+                        <StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+                            <StackPanel x:Name="CoeffAccuracy" Orientation="Horizontal" Margin="3 0 0 0" HorizontalAlignment="Right">
+                                <Label HorizontalAlignment="Right" Content="Точность"/>
+                                <TextBox Margin="3 0" Text="0,01" Height="20" Width="80" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="55">
+                                    <TextBlock></TextBlock>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel x:Name="NumberOfSegments" Orientation="Horizontal" Margin="3 0 0 0" HorizontalAlignment="Right">
+                                <Label HorizontalAlignment="Right" Content="Количество сегментов"/>
+                                <TextBox Margin="3 0" Text="10" Height="20" Width="80" IsReadOnly="False"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                <ComboBox Margin="0" Height="20" SelectedIndex="0" Width="55">
+                                    <TextBlock></TextBlock>
+                                </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <GroupBox Header="Результат моделирования" HorizontalAlignment="Right"  Margin="5 5 3 5"
+                            VerticalAlignment="Top" Width="315" Height="auto">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel x:Name="GasRateResult" Orientation="Horizontal" Margin="3 3 0 0" HorizontalAlignment="Right">
+                                <Label HorizontalAlignment="Right" Content="Дебит газа"/>
+                                <TextBox Margin="3 0" Text="0" Height="20" Width="75" IsReadOnly="True"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                <ComboBox Margin="0 3 3 3" Width="85" Padding="7 2 0 0" Height="20" SelectedIndex="0">
+                                    <TextBlock>тыс.м³/сут</TextBlock>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel x:Name="BottomholePressureResult" Orientation="Horizontal" Margin="3 0 0 0" HorizontalAlignment="Right">
+                                <Label HorizontalAlignment="Right" Content="Забойное давление"/>
+                                <TextBox Margin="3 0" Text="0" Height="20" Width="75" 
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                <ComboBox Margin="0 0 3 0" Width="85" Height="20" SelectedIndex="0">
+                                    <TextBlock>МПа</TextBlock>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel x:Name="NglRateResult" Orientation="Horizontal" Margin="3 0 0 0" HorizontalAlignment="Right">
+                                <Label HorizontalAlignment="Right" Content="Дебит конденсата"/>
+                                <TextBox Margin="3 0" Text="0" Height="20" Width="75"  IsReadOnly="True"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                <ComboBox Margin="0 0 3 0" Width="85" Padding="7 2" Height="20" SelectedIndex="0">
+                                    <TextBlock>т/сут</TextBlock>
+                                </ComboBox>
+                            </StackPanel>
+                            <StackPanel x:Name="WaterRateResult" Orientation="Horizontal" Margin="3 0 0 3" HorizontalAlignment="Right">
+                                <Label HorizontalAlignment="Right" Content="Дебит воды"/>
+                                <TextBox Margin="3 0" Text="0" Height="20" Width="75"  IsReadOnly="True"
+                                            PreviewTextInput="PreviewTextInput_DigitalDouble" PreviewKeyDown="PreviewKeyDown_BlocSpace" />
+                                <ComboBox Margin="0 0 3 0" Width="85" Padding="7 2" Height="20" SelectedIndex="0">
+                                    <TextBlock>м³/сут</TextBlock>
+                                </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Button Margin="30 20" Content="Моделирование" VerticalAlignment="Bottom" Click="Modeling"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
